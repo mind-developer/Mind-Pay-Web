@@ -1,25 +1,30 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import Axios from 'axios';
+import React, { useContext } from 'react';
+import {
+  BrowserRouter,
+  Switch,
+  Route
+} from "react-router-dom";
+
+import Login from "./Pages/Login";
+import Admin from "./Pages/Admin";
+import { AuthContext } from "./providers/auth";
+
+Axios.defaults.baseURL = "http://localhost:3333/";
 
 function App() {
+
+  const { isAuthenticated, isLoading } = useContext(AuthContext);
+  
+  if(isLoading) return <></>;
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <BrowserRouter>
+      <Switch>
+        <Route path="/">
+          {isAuthenticated ? <Admin/> : <Login/>}
+        </Route>
+      </Switch>
+    </BrowserRouter>
   );
 }
 
