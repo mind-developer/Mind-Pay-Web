@@ -13,17 +13,15 @@ export default function Auth({ children }) {
 			let storagedUser = localStorage.getItem('user');
 			const storagedToken = localStorage.getItem('jwtToken');
 			
-			if(storagedToken){
-					Axios.get('/user', {headers: { 'Authorization': localStorage.getItem('jwtToken')}})
-					.then(res => {
-							storagedUser = JSON.stringify(res.data);
 
-							setUser(JSON.parse(storagedUser));
-							setisLoading(false); 
-					})
+			if(storagedToken){					
+				setUser(JSON.parse(storagedUser));
 			}else{
-					setisLoading(false); 
+				setUser(null)
 			}
+
+			setisLoading(false); 
+
 
 	}, [setisLoading]);
 

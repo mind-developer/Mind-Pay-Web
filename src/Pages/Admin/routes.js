@@ -4,21 +4,51 @@ import MessagesInterface from "./Messages/";
 import UserProfile from "./Users/Profile";
 import Dashboard from "./Dashboard";
 
-export default [
+import {
+    UserOutlined, 
+    PieChartOutlined,
+    MessageOutlined,
+    TeamOutlined
+} from '@ant-design/icons';
+
+
+ const Routes = [
     {
         path: '/user/:id',
-        component: () => <UserProfile/>
+        component: () => <UserProfile/>,
+        onlyRoute: true,
     },
     {
-        path: '/user',
-        component: () => <UserInterface/>
+        name: 'Perfil',
+        path: '/user/',
+        component: () => <UserProfile/>,
+        icon: <UserOutlined />
     },
     {
+        name: 'Usuários',
+        path: '/users',
+        component: () => <UserInterface/>,
+        icon: <TeamOutlined/>
+    },
+    {
+        name: 'Mensagens',
         path: '/requests',
-        component: () => <MessagesInterface/>
+        component: () => <MessagesInterface/>,
+        icon: <MessageOutlined />
     },
     {
+        name: 'Dashboards',
         path: '/',
-        component: () => <Dashboard/>
+        component: () => <Dashboard/>,
+        icon: <PieChartOutlined />
     }
 ]
+
+const Map = {}
+
+Routes.forEach((route, index) => {
+    Map[route.path] = index.toString(); // maps routes in constant time
+})
+
+export default Routes;
+export const RouteMap = Map;

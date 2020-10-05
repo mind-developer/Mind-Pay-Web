@@ -10,8 +10,8 @@ import { DownOutlined, FilePdfOutlined } from '@ant-design/icons';
     return (
       <Menu>
         <Menu.Item>
-          <a target="_blank" rel="noopener noreferrer" href="http://www.taobao.com/">
-            trigger modal
+          <a target="_blank" rel="noopener noreferrer">
+            Enviar Recibo
           </a>
         </Menu.Item>
       </Menu>
@@ -44,6 +44,11 @@ const columns = [
 			render: text => <a>
 				{<Status status={Boolean(text)}/> }
 			</a>,
+    },
+    {
+			title: 'Data',
+			dataIndex: 'created_at',
+			key: 'created_at',
     },
     {
       title: 'Ação',
@@ -83,13 +88,13 @@ const Messages = () => {
 
     const { data } = useSWR('/requests/all', fetcher);
     return(
-        <div className="site-layout-background" style={{ padding: 24, minHeight: 350 }}>
+        <div className="site-layout-background" style={{ padding: 24 }}>
           {/* <img src={ require('../../../assets/images/mindbear.png')} /> */}
           <h1>Listagem de Pedidos</h1>
           <Table 
             loading={Boolean(!data)} 
             locale={{emptyText: 'Sem dados'}} 
-            rowKey={'id'} expandable={expandable}  
+            rowKey={'id'} expandable={data?.receipt_location && expandable}  
             theme=""
             pagination={{pageSize: 5}} 
             columns={columns} 
