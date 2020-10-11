@@ -1,6 +1,6 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
+import { AuthContext } from "../../../../providers/auth";
 
-import InputMask from "react-input-mask";
 import {
   UserOutlined,
   BankOutlined,
@@ -22,22 +22,13 @@ function getBase64(img, callback) {
   reader.readAsDataURL(img);
 }
 
-const fetcher = (url) => {
-  const token = localStorage.getItem("jwtToken");
-
-  return Axios.get(url, { headers: { Authorization: token } }).then((res) => {
-    return res.data;
-  });
-};
 
 const UserInputs = (props) => {
-  const { id = "" } = useParams();
 
-  console.log(id);
+  const { id = "" } = useParams();
+  const { fetcher } = useContext(AuthContext)
 
   const { data: user } = useSWR(`/user/${id}`, fetcher);
-
-  console.log(user);
 
   const [form] = Form.useForm();
   const [fileList, setFileList] = useState([]);
@@ -126,12 +117,12 @@ const UserInputs = (props) => {
                   src={
                     imagePreview
                       ? imagePreview
-                      : user?.profile_image &&
-                        Axios.defaults.baseURL + "media/" + user?.profile_image
+                      : user?.data.profile_image &&
+                        Axios.defaults.baseURL + "media/" + user?.data.profile_image
                   }
                   alt="profile_image"
                 >
-                  {"s"}
+                  {user?.data.name[0]}
                 </Avatar>
                 <p className="ant-upload-hint">
                   Clique ou arraste para adicionar uma foto de perfil
@@ -145,21 +136,20 @@ const UserInputs = (props) => {
           <Form.Item name="firstname">
             <Input
               placeholder="Nome"
-              defaultValue={user?.name}
+              defaultValue={user?.data.name}
               prefix={<UserOutlined className="site-form-item-icon" />}
             />
           </Form.Item>
         </Form.Item>
 
-        <Form.Item style={{ marginBottom: 0 }}>
           <Form.Item name="cpf">
             <Input
               placeholder="CPF"
-              defaultValue={user?.cpf}
+              defaultValue={user?.data.cpf.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, "$1.$2.$3-$4")}
               prefix={<UserOutlined className="site-form-item-icon" />}
             />
           </Form.Item>
-        </Form.Item>
+        
 
         <Form.Item style={{ marginBottom: 0 }}>
           <Form.Item
@@ -168,7 +158,7 @@ const UserInputs = (props) => {
           >
             <Input
               placeholder="Numero da Agencia"
-              defaultValue={user?.agency_number}
+              defaultValue={user?.data.agency_number}
               prefix={<FieldNumberOutlined className="site-form-item-icon" />}
             />
           </Form.Item>
@@ -182,7 +172,7 @@ const UserInputs = (props) => {
           >
             <Input
               placeholder="Banco"
-              defaultValue={user?.bank}
+              defaultValue={user?.data.bank}
               prefix={<BankOutlined className="site-form-item-icon" />}
             />
           </Form.Item>
@@ -191,7 +181,7 @@ const UserInputs = (props) => {
         <Form.Item name="account" type="text">
           <Input
             placeholder="Numero da conta"
-            defaultValue={user?.account}
+            defaultValue={user?.data.account}
             prefix={<UserOutlined className="site-form-item-icon" />}
           />
         </Form.Item>
@@ -199,7 +189,7 @@ const UserInputs = (props) => {
         <Form.Item name="email" type="email">
           <Input
             placeholder="Email"
-            defaultValue={user?.email}
+            defaultValue={user?.data.email}
             prefix={<MailOutlined className="site-form-item-icon" />}
           />
         </Form.Item>

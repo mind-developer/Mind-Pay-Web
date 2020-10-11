@@ -6,7 +6,6 @@ import {
   Col,
   Row,
   Input,
-  Select,
   message,
 } from "antd";
 import { LoadingOutlined } from "@ant-design/icons";

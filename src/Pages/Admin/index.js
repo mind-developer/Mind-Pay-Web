@@ -2,12 +2,6 @@ import React from 'react';
 import { Layout, Menu } from "antd";
   
 import "./index.css";
-import {
-    UserOutlined, 
-    PieChartOutlined,
-    MessageOutlined,
-    TeamOutlined
-} from '@ant-design/icons';
 
 import {
     BrowserRouter,
@@ -19,7 +13,6 @@ import {
 import Routes, {RouteMap} from "./routes";
 
 const { Content, Sider } = Layout;
-const { SubMenu } = Menu;
 
 const Admin = () => {
 
@@ -35,7 +28,6 @@ const Admin = () => {
           {/* </div> */}
           <Menu 
             theme="dark"
-             defaultSelectedKeys={['1']}
              mode="inline"
              defaultSelectedKeys={[RouteMap[pathname]]}
           >

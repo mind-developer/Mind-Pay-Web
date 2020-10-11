@@ -32,27 +32,12 @@ const menu = (props) => {
   return (
     <Menu>
       <Menu.Item>
-        <a rel="noopener noreferrer" href={`user/${props.id}`}>
+        <a href={"/user/" + props.id}>
           Ver Mais
         </a>
       </Menu.Item>
       <Menu.Item>
-        <a
-          target="_blank"
-          rel="noopener noreferrer"
-          href="http://www.taobao.com/"
-        >
-          Enviar Recibo
-        </a>
-      </Menu.Item>
-      <Menu.Item>
-        <a
-          target="_blank"
-          rel="noopener noreferrer"
-          href="http://www.taobao.com/"
-        >
           Ver Recibos
-        </a>
       </Menu.Item>
       <Menu.Item
         danger
@@ -86,13 +71,13 @@ const columns = [
     title: "CPF",
     dataIndex: "cpf",
     key: "cpf",
-    render: (text) => <p>{text.replace()}</p>,
+    render: (text) => <span>{text.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, "$1.$2.$3-$4")}</span>,
   },
   {
     title: "Finalizou?",
     dataIndex: "finished_registration",
     key: "cpf",
-    render: (text) => <a>{<Status status={Boolean(text)} />}</a>,
+    render: (text) => <span>{<Status status={Boolean(text)} />}</span>,
   },
   {
     title: "Action",
@@ -100,22 +85,14 @@ const columns = [
     render: (text, record) => (
       <Space size="middle">
         <Dropdown overlay={() => menu(record)}>
-          <a className="ant-dropdown-link" onClick={(e) => e.preventDefault()}>
+          <Button type="dashed" className="ant-dropdown-link" onClick={(e) => e.preventDefault()}>
             Mais Opções <DownOutlined />
-          </a>
+          </Button>
         </Dropdown>
       </Space>
     ),
   },
 ];
-
-const expandable = {
-  expandedRowRender: (record) => {
-    return (
-      <img src={Axios.defaults.baseURL + "media/" + record.profile_image}></img>
-    );
-  },
-};
 
 const fetcher = (url) => {
   const token = localStorage.getItem("jwtToken");
@@ -145,7 +122,6 @@ const Profile = () => {
         loading={Boolean(!data)}
         locale={{ emptyText: "Sem dados" }}
         rowKey={"id"}
-        // expandable={expandable}
         theme=""
         pagination={{ pageSize: 5 }}
         columns={columns}

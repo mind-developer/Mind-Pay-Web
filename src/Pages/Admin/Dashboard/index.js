@@ -24,7 +24,7 @@ const Container = styled.div`
 function Dashboard() {
   return <Container>
     <h1>MindPay</h1>
-    <img src={MindBear}/>
+    <img alt="mindconsulting" src={MindBear}/>
   </Container>;
 }
 

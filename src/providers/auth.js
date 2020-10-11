@@ -12,7 +12,6 @@ export default function Auth({ children }) {
 
 			let storagedUser = localStorage.getItem('user');
 			const storagedToken = localStorage.getItem('jwtToken');
-			
 
 			if(storagedToken){					
 				setUser(JSON.parse(storagedUser));
@@ -32,15 +31,41 @@ export default function Auth({ children }) {
 			localStorage.removeItem('jwtToken', null)
 	}
 
-	function login({user, token}){
+	async function login({user, token}){
 			setUser(user);
-			
+						
 			localStorage.setItem('user', JSON.stringify(user))
 			localStorage.setItem('jwtToken', token)
 	}
 
+	const fetcher = async (url) => {
+
+		const getTokenAsync = new Promise(resolve => {
+			setTimeout(function(){
+				const token = localStorage.getItem("jwtToken");
+				resolve(token);
+			}, 50)
+		})
+		
+		return getTokenAsync.then(token => {
+			
+			return Axios.get(url, { headers: { Authorization: token } }).then(
+				(res) => {
+					return res;
+				}
+			  ).catch(error => {
+				  if(error.response.status === 401){
+					  logout();
+				  }else{
+					  alert('Erro interno, por favor tente novamente ou contate um administrador!')
+				  }
+			  });
+		})
+		
+	};
+
 	return (
-			<AuthContext.Provider value={{ isAuthenticated: Boolean(user), user, isLoading, login, logout }}>
+			<AuthContext.Provider value={{ isAuthenticated: Boolean(user), user, isLoading, login, logout, fetcher }}>
 					{children}
 			</AuthContext.Provider>
 	)

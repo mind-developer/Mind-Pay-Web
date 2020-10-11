@@ -7,6 +7,8 @@ import Axios from "axios";
 import InputMask from 'react-input-mask';
 import { AuthContext } from "../../providers/auth";
 
+message.config({maxCount: 3})
+
 function App() {
 
 	const { login } = useContext(AuthContext);

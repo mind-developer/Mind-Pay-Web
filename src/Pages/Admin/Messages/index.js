@@ -1,23 +1,11 @@
-import React, { useState } from "react";
-import { Table, Space, Dropdown, Menu, Modal } from 'antd';
+import React, { useContext } from "react";
+import { Table, Space, Modal, Button } from 'antd';
 import useSWR from 'swr';
 import Axios from "axios";
 import { Status } from "./style";
-import { DownOutlined, FilePdfOutlined } from '@ant-design/icons';
-
-  const DropMenu = () => {
-
-    return (
-      <Menu>
-        <Menu.Item>
-          <a target="_blank" rel="noopener noreferrer">
-            Enviar Recibo
-          </a>
-        </Menu.Item>
-      </Menu>
-    )
-  };
-
+import { FilePdfOutlined } from '@ant-design/icons';
+import { AuthContext } from "../../../providers/auth";
+import modalForm from "./modalForm";
 
 const columns = [
     {
@@ -41,9 +29,9 @@ const columns = [
 			title: 'Pago?',
 			dataIndex: 'request_finished',
 			key: 'request_finished',
-			render: text => <a>
+			render: text => <span>
 				{<Status status={Boolean(text)}/> }
-			</a>,
+			</span>,
     },
     {
 			title: 'Data',
@@ -55,17 +43,22 @@ const columns = [
       key: 'acao',
       render: (text, record) => (
         <Space size="middle">
-					<Dropdown overlay={() => DropMenu()}>
-						<a className="ant-dropdown-link" onClick={e => e.preventDefault()}>
-							Mais Opções <DownOutlined />
-						</a>
-					</Dropdown>
+						{
+              !record.request_finished && <Button type="danger" className="ant-dropdown-link" onClick={e => Modal.confirm((() => modalForm(record))())}>
+							  Pagar
+						  </Button>
+            }
         </Space>
       ),
     },
   ];
 
 const expandable = { expandedRowRender: record => {
+
+  if(!record.receipt_location){
+    return false;
+  }
+
     return (
       <a href={Axios.defaults.baseURL + "media/" + record.receipt_location}> 
         <FilePdfOutlined /> 
@@ -75,26 +68,20 @@ const expandable = { expandedRowRender: record => {
   } 
 };
 
-const fetcher = url => {
-
-  const token = localStorage.getItem('jwtToken');
-
-    return Axios.get(url, 
-    {headers: { Authorization: token}})
-    .then(res => res);
-}
-
 const Messages = () => {
 
+    const { fetcher } = useContext(AuthContext)
     const { data } = useSWR('/requests/all', fetcher);
+
+
     return(
         <div className="site-layout-background" style={{ padding: 24 }}>
-          {/* <img src={ require('../../../assets/images/mindbear.png')} /> */}
           <h1>Listagem de Pedidos</h1>
           <Table 
             loading={Boolean(!data)} 
             locale={{emptyText: 'Sem dados'}} 
-            rowKey={'id'} expandable={data?.receipt_location && expandable}  
+            rowKey={'id'}
+            expandable={expandable}  
             theme=""
             pagination={{pageSize: 5}} 
             columns={columns} 
