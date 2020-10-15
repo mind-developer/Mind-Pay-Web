@@ -49,7 +49,6 @@ const columns = [
 			title: 'Data',
 			dataIndex: 'created_at',
       key: 'created_at',
-      defaultSortOrder: 'descend',
       sorter: (a, b) => dayjs(a.created_at).unix() - dayjs(b.created_at).unix()
     },
     {

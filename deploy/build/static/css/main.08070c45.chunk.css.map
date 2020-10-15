@@ -1,0 +1,1 @@
+{"version":3,"sources":["index.css"],"names":[],"mappings":"AAAA,KACE,QAAS,CACT,mJAEY,CACZ,kCAAmC,CACnC,iCACF,CAEA,KACE,yEAEF,CAZA,aACI,kBACJ,CAEA,wBACI,kBACJ","file":"main.08070c45.chunk.css","sourcesContent":[".site-layout{\n    background: rgb(30, 30, 30);\n}\n\n.site-layout-background{\n    background: rgb(46, 46, 46);\n}"]}
