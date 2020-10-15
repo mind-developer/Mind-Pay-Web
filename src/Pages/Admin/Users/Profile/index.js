@@ -133,7 +133,7 @@ const UserInputs = (props) => {
         </Form.Item>
 
         <Form.Item style={{ marginBottom: 0 }}>
-          <Form.Item name="firstname">
+          <Form.Item name="name">
             <Input
               placeholder="Nome"
               defaultValue={user?.data.name}

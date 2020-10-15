@@ -10,7 +10,7 @@ import Login from "./Pages/Login";
 import Admin from "./Pages/Admin";
 import { AuthContext } from "./providers/auth";
 
-Axios.defaults.baseURL = "http://localhost:3333/";
+Axios.defaults.baseURL = "http://162.214.54.8:3376/";
 
 function App() {
 

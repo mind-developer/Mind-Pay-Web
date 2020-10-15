@@ -6,6 +6,7 @@ import { Status } from "./style";
 import { FilePdfOutlined } from '@ant-design/icons';
 import { AuthContext } from "../../../providers/auth";
 import modalForm from "./modalForm";
+import dayjs from "dayjs";
 
 const columns = [
     {
@@ -31,12 +32,25 @@ const columns = [
 			key: 'request_finished',
 			render: text => <span>
 				{<Status status={Boolean(text)}/> }
-			</span>,
+      </span>,
+      filters: [
+        {
+          text: 'Pago',
+          value: 1,
+        },
+        {
+          text: 'Em aberto',
+          value: null,
+        },
+      ],
+      onFilter: (value, record) => record.request_finished === value,
     },
     {
 			title: 'Data',
 			dataIndex: 'created_at',
-			key: 'created_at',
+      key: 'created_at',
+      defaultSortOrder: 'descend',
+      sorter: (a, b) => dayjs(a.created_at).unix() - dayjs(b.created_at).unix()
     },
     {
       title: 'Ação',

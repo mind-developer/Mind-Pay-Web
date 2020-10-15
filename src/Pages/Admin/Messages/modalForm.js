@@ -3,6 +3,7 @@ import Dragger from "antd/lib/upload/Dragger";
 import React from "react";
 import { InboxOutlined } from '@ant-design/icons';
 import Axios from "axios";
+import { mutate } from "swr";
 
 const ModalForm = ({record}) => {
 
@@ -19,6 +20,7 @@ const ModalForm = ({record}) => {
         }).then(res => {
             Modal.destroyAll();
             message.success('Recibo enviado com sucesso!');
+            mutate('/requests/all')
         }).catch(err => {
             message.error('Desculpe, ocorreu um erro :(');
         })
@@ -46,8 +48,7 @@ const ModalForm = ({record}) => {
 }
 
 export default function(record){
-
-    
+   
     return {
         title: "Enviar Recibo",
         content: <ModalForm record={record}/>,
