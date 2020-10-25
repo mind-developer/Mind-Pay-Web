@@ -16,6 +16,8 @@ import Axios from "axios";
 import useSWR, { mutate } from "swr";
 import { useParams } from "react-router-dom/cjs/react-router-dom.min";
 
+import InputMask from "react-input-mask";
+
 function getBase64(img, callback) {
   const reader = new FileReader();
   reader.addEventListener("load", () => callback(reader.result));
@@ -179,11 +181,15 @@ const UserInputs = (props) => {
         </Form.Item>
 
         <Form.Item name="account" type="text">
-          <Input
-            placeholder="Numero da conta"
-            defaultValue={user?.data.account}
-            prefix={<UserOutlined className="site-form-item-icon" />}
-          />
+            <InputMask mask="999999-9" maskPlacholder={null} defaultValue={user?.data.account}>
+              {props => (
+                <Input
+                  {...props}
+                  placeholder="Numero da conta"
+                  prefix={<UserOutlined className="site-form-item-icon" />}
+                />
+              )}
+            </InputMask>
         </Form.Item>
 
         <Form.Item name="email" type="email">

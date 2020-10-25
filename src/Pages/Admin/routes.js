@@ -31,7 +31,7 @@ import {
         icon: <TeamOutlined/>
     },
     {
-        name: 'Mensagens',
+        name: 'Pagamentos',
         path: '/requests',
         component: () => <MessagesInterface/>,
         icon: <MessageOutlined />

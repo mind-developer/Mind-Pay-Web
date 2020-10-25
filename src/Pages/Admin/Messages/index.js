@@ -8,6 +8,10 @@ import { AuthContext } from "../../../providers/auth";
 import modalForm from "./modalForm";
 import dayjs from "dayjs";
 
+var MoneyFormatter = new Intl.NumberFormat('pt-BR', {
+  maximumSignificantDigits: 3,
+});
+
 const columns = [
     {
       title: 'Nome',
@@ -16,15 +20,16 @@ const columns = [
       render: (text, record) => <a href={`user/${record.user_id}`} title="Ir para usuário">{text}</a>,
     },
     {
-      title: 'Quantidade',
+      title: 'Valor',
       dataIndex: 'amount',
       key: 'amount',
+    render: text => <span>R$ {MoneyFormatter.format(text)}</span>
     },
     {
       title: 'Descrição',
       dataIndex: 'description',
       key: 'description',
-      render: text => <p style={{maxWidth: '250px'}}>{text}</p>
+      render: text => <span style={{maxWidth: '250px'}}>{text}</span>
     },
     {
 			title: 'Pago?',
