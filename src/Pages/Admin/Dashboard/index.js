@@ -1,6 +1,11 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import styled from 'styled-components';
-import MindBear from "../../../assets/images/mindbear.png";
+import useSWR from "swr";
+import { AuthContext } from '../../../providers/auth';
+import Axios from 'axios';
+import { Col, Row } from 'antd';
+import {VictoryChart, VictoryLine, VictoryScatter} from "victory";
+         
 
 const Container = styled.div`
     flex-direction: column;
@@ -21,10 +26,76 @@ const Container = styled.div`
     }
 `;
 
+const chartTheme = {
+  independentAxis: {
+    style: {
+      tickLabels: {
+        fill: 'black',
+        angle: 0,
+        padding: 10,
+        fontSize: 10,
+        fontFamily: 'Poppins'
+      },
+      grid: {
+        stroke: 'transparent',
+      }
+    },
+  },
+  dependentAxis: {
+    style: {
+      tickLabels: {
+        fill: 'black',
+        padding: 5,
+        fontSize: 10,
+        fontFamily: 'Poppins'
+      },
+      grid: {
+        stroke: 'transparent',
+      }
+    },
+  }, 
+};
+
+const months = ['jan', 'fev', 'mar', 'abr', 'mai', 'jun', 'jul', 'ago', 'set', 'out', 'nov', 'dez'];
+
 function Dashboard() {
+  
+  const { fetcher } = useContext(AuthContext);
+
+  const { data } = useSWR('/users/count', fetcher);
+  const { data: payments } = useSWR('/users/payments', fetcher);
+
+
   return <Container>
-    <h1>MindPay</h1>
-    <img alt="mindconsulting" src={MindBear}/>
+    <Row style={{justifyContent: 'space-between', alignItems: 'center', width: '70%'}}>
+      <Col span={24}>
+        <h1 style={{marginTop: 20}}>
+          Gráfico de pagamentos mensais
+        </h1>
+         {
+           payments?.data && (
+            <VictoryChart height={250} theme={chartTheme}>
+              <VictoryLine
+                interpolation={'linear'} data={payments?.data.map((i, index) => {return {x: months[index], y: i}})}
+                style={{ data: { stroke: "black" } }}
+              />
+              <VictoryScatter data={payments?.data.map((i, index) => {return {x: months[index], y: i}})}
+                size={2}
+                style={{ data: { fill: "black" } }}
+              />
+            </VictoryChart>
+           )
+         }
+      </Col>
+      <Col span={24} style={{marginBottom: 50}}>
+        <h1>
+          já somos {data?.data.length} Minders
+        </h1>
+        {data?.data.map(item => (
+          <img alt={item.name} style={{width: 50, height: 50, borderRadius: 50, objectFit: 'cover'}} src={Axios.defaults.baseURL + "media/" + item.profile_image}></img>
+        ))}
+      </Col>
+    </Row>
   </Container>;
 }
 

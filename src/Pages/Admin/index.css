@@ -1,7 +1,15 @@
-.site-layout{
-    background: rgb(30, 30, 30);
+.ant-layout-sider {
+    background: #151515;
 }
 
-.site-layout-background{
-    background: rgb(46, 46, 46);
+.ant-menu.ant-menu-dark{
+    background: #151515;
+}
+
+.ant-menu.ant-menu-dark .ant-menu-item-selected{
+    background-color: #822929;
+}
+
+.ant-layout-sider-trigger{
+    background-color: #822929;
 }

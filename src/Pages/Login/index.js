@@ -37,7 +37,7 @@ function App() {
 							rules={[{ required: true, message: 'Por favor coloque com sua login!' }]}
 					>
 						<InputMask mask="999.999.999-99" maskPlaceholder="">
-							<Input prefix={<UserOutlined className="site-form-item-icon" />} autoComplete="off" placeholder="Login" />
+							{() => <Input prefix={<UserOutlined className="site-form-item-icon" />} autoComplete="off" placeholder="Login" />}
 						</InputMask>
 					</Form.Item>
 					<Form.Item

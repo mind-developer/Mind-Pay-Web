@@ -22,12 +22,12 @@ const Admin = () => {
     return (
         <BrowserRouter>
         <Layout style={{ minHeight: '100vh' }}>
-        <Sider collapsible style={{background: '#101010'}}>
+        <Sider collapsible >
           {/* <div className="logo"> */}
             {/* <img src={Logo} style={{maxWidth: '100%', padding: '2rem'}}/> */}
           {/* </div> */}
           <Menu 
-            theme="dark"
+             theme="dark"
              mode="inline"
              defaultSelectedKeys={[RouteMap[pathname]]}
           >
@@ -45,7 +45,7 @@ const Admin = () => {
                 })}
           </Menu>
         </Sider>
-        <Layout className="site-layout" style={{backgroundImage: `url('/toppng2.png')`, backgroundSize: '200px 200px'}}>
+        <Layout className="site-layout">
             <Content style={{ margin: '16px', padding: '0 16px'}}>
                 <Switch>
                     {
