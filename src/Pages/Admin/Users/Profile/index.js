@@ -18,13 +18,6 @@ import { useParams } from "react-router-dom/cjs/react-router-dom.min";
 
 import InputMask from "react-input-mask";
 
-function getBase64(img, callback) {
-  const reader = new FileReader();
-  reader.addEventListener("load", () => callback(reader.result));
-  reader.readAsDataURL(img);
-}
-
-
 const UserInputs = (props) => {
 
   const { id = "" } = useParams();
@@ -34,11 +27,9 @@ const UserInputs = (props) => {
 
   const [form] = Form.useForm();
   const [fileList, setFileList] = useState([]);
-  const [imagePreview, setimagePreview] = useState();
 
   const handleRemove = () => {
     setFileList([]);
-    setimagePreview(undefined);
   };
 
   const DisplayLoading = (message1, message2, key) => {
@@ -78,9 +69,6 @@ const UserInputs = (props) => {
       },
     }).then((res) => {
       finish();
-      getBase64(info.file, (imageUrl) => {
-        setimagePreview(imageUrl);
-      });
       mutate(`/user/${id}`);
     });
   };
@@ -117,9 +105,7 @@ const UserInputs = (props) => {
                   }}
                   size={200}
                   src={
-                    imagePreview
-                      ? imagePreview
-                      : user?.data.profile_image &&
+                      user?.data.profile_image &&
                         Axios.defaults.baseURL + "media/" + user?.data.profile_image
                   }
                   alt="profile_image"
@@ -181,7 +167,7 @@ const UserInputs = (props) => {
         </Form.Item>
 
         <Form.Item name="account" type="text">
-            <InputMask mask="999999-9" maskPlacholder={null} defaultValue={user?.data.account}>
+            <InputMask mask="999999-9" defaultValue={user?.data.account}>
               {props => (
                 <Input
                   {...props}

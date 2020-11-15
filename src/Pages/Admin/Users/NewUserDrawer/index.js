@@ -31,7 +31,7 @@ function NewUserDrawer({ IsOpen, setIsOpen }) {
 		setIsOpen(false);
       })
       .catch((err) => {
-        message.error("erro");
+        message.error(err.response.data);
       })
       .finally(() => {
         setIsLoading(false);
@@ -92,7 +92,7 @@ function NewUserDrawer({ IsOpen, setIsOpen }) {
               rules={[{ required: true, message: "Por favor digite o CPF" }]}
             >
               <InputMask mask="999.999.999-99" maskPlaceholder="">
-                <Input placeholder="CPF" autoComplete="off" />
+                {() => <Input placeholder="CPF" autoComplete="off" />}
               </InputMask>
             </Form.Item>
           </Col>

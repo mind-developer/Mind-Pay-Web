@@ -7,7 +7,7 @@
 }
 
 .ant-menu.ant-menu-dark .ant-menu-item-selected{
-    background-color: #822929;
+    background-color: #822929 !important; 
 }
 
 .ant-layout-sider-trigger{

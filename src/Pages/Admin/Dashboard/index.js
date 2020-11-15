@@ -3,9 +3,10 @@ import styled from 'styled-components';
 import useSWR from "swr";
 import { AuthContext } from '../../../providers/auth';
 import Axios from 'axios';
-import { Col, Row } from 'antd';
+import { Col, Row, Spin, Avatar } from 'antd';
 import {VictoryChart, VictoryLine, VictoryScatter} from "victory";
-         
+import { LoadingOutlined } from '@ant-design/icons';
+
 
 const Container = styled.div`
     flex-direction: column;
@@ -21,9 +22,6 @@ const Container = styled.div`
         font-family: 'poppins';
     }
 
-    img{
-        width: 250px;
-    }
 `;
 
 const chartTheme = {
@@ -65,6 +63,10 @@ function Dashboard() {
   const { data } = useSWR('/users/count', fetcher);
   const { data: payments } = useSWR('/users/payments', fetcher);
 
+  if(!data && !payments){
+    return <Spin indicator={<LoadingOutlined/>}/>
+  }
+
 
   return <Container>
     <Row style={{justifyContent: 'space-between', alignItems: 'center', width: '70%'}}>
@@ -92,7 +94,7 @@ function Dashboard() {
           já somos {data?.data.length} Minders
         </h1>
         {data?.data.map(item => (
-          <img alt={item.name} style={{width: 50, height: 50, borderRadius: 50, objectFit: 'cover'}} src={Axios.defaults.baseURL + "media/" + item.profile_image}></img>
+          <Avatar alt={item.name} size={50} style={{objectFit: 'cover'}} src={Axios.defaults.baseURL + "media/" + item.profile_image}>{item.name[0]}</Avatar>
         ))}
       </Col>
     </Row>
