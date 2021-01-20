@@ -16,7 +16,8 @@
     "react-router-dom": "^5.2.0",
     "react-scripts": "3.4.3",
     "styled-components": "^5.2.0",
-    "swr": "^0.3.3"
+    "swr": "^0.3.3",
+    "victory": "^35.4.6"
   },
   "scripts": {
     "start": "react-scripts start",
