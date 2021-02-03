@@ -20,10 +20,12 @@ function confirm({ name, id }) {
     cancelText: "Cancelar",
     onOk: () => {
       const token = localStorage.getItem("jwtToken");
-      Axios.delete("/user/" + id, { headers: { Authorization: token } }).then(res => {
-        message.success("Usuário excluido com sucesso");
-        mutate('/users');
-      });
+      Axios.delete("/user/" + id, { headers: { Authorization: token } }).then(
+        (res) => {
+          message.success("Usuário excluido com sucesso");
+          mutate("/users");
+        }
+      );
     },
   });
 }
@@ -32,13 +34,9 @@ const menu = (props) => {
   return (
     <Menu>
       <Menu.Item>
-        <a href={"/user/" + props.id}>
-          Ver Mais
-        </a>
+        <a href={"/user/" + props.id}>Ver Mais</a>
       </Menu.Item>
-      <Menu.Item>
-          Ver Recibos
-      </Menu.Item>
+      <Menu.Item>Ver Recibos</Menu.Item>
       <Menu.Item
         danger
         onClick={() => confirm({ name: props.name, id: props.id })}
@@ -54,7 +52,11 @@ const columns = [
     title: "Avatar",
     dataIndex: "profile_image",
     key: "profile_image",
-    render: (text, record) => <Avatar src={Axios.defaults.baseURL + "media/" + text}>{record?.name[0]}</Avatar>,
+    render: (text, record) => (
+      <Avatar src={Axios.defaults.baseURL + "media/" + text}>
+        {record?.name[0]}
+      </Avatar>
+    ),
   },
   {
     title: "Nome",
@@ -71,7 +73,15 @@ const columns = [
     title: "CPF",
     dataIndex: "cpf",
     key: "cpf",
-    render: (text) => <span>{text.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, "$1.$2.$3-$4")}</span>,
+    render: (text) => (
+      <span>{text.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, "$1.$2.$3-$4")}</span>
+    ),
+  },
+  {
+    title: "Data de Nascimento",
+    dataIndex: "data_de_nascimento",
+    key: "cpf",
+    render: (text) => <span>{new Date(text).toLocaleDateString("pt-br")}</span>,
   },
   {
     title: "Finalizou?",
@@ -85,7 +95,11 @@ const columns = [
     render: (text, record) => (
       <Space size="middle">
         <Dropdown overlay={() => menu(record)}>
-          <Button type="dashed" className="ant-dropdown-link" onClick={(e) => e.preventDefault()}>
+          <Button
+            type="dashed"
+            className="ant-dropdown-link"
+            onClick={(e) => e.preventDefault()}
+          >
             Mais Opções <DownOutlined />
           </Button>
         </Dropdown>
@@ -107,10 +121,7 @@ const Profile = () => {
   const [Drawer, ToggleDrawer] = useState(false);
 
   return (
-    <div
-      className="site-layout-background"
-      style={{ padding: 24 }}
-    >
+    <div className="site-layout-background" style={{ padding: 24 }}>
       <NewUser IsOpen={Drawer} setIsOpen={ToggleDrawer} />
       <div style={{ display: "flex", justifyContent: "flex-end" }}>
         <Button type="primary" onClick={() => ToggleDrawer((prev) => !prev)}>
