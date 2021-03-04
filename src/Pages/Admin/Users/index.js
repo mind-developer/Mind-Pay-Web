@@ -65,6 +65,12 @@ const columns = [
     render: (text, record) => <a href={"/user/" + record.id}>{text}</a>,
   },
   {
+    title: "Salario Base",
+    dataIndex: "base_salary",
+    key: "base_salary",
+    render: (text, record) => <div>R$ {text}</div>,
+  },
+  {
     title: "Email",
     dataIndex: "email",
     key: "email",
