@@ -6,7 +6,7 @@ import Login from "./Pages/Login";
 import Admin from "./Pages/Admin";
 import { AuthContext } from "./providers/auth";
 
-Axios.defaults.baseURL = "http://162.214.160.241:3309/";
+Axios.defaults.baseURL = "https://mindpay.mindconsulting.com.br/api";
 // Axios.defaults.baseURL = "http://localhost:3333/";
 
 function App() {
