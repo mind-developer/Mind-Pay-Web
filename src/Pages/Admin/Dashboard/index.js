@@ -245,7 +245,7 @@ function Dashboard() {
           <Table columns={columns} dataSource={valores} pagination={{ pageSize: 12 }} />
         </div>
         <h1>
-          Já somos {data?.data.length} Minders
+          Já somos {data?.data?.length} Minders
         </h1>
         {data?.data.map(item => (
           <Avatar alt={item.name} size={50} style={{ objectFit: 'cover' }} src={Axios.defaults.baseURL + "media/" + item.profile_image}>{item.name[0]}</Avatar>

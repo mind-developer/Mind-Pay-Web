@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import { Table, Space, Modal, Button } from "antd";
+import { Table, Space, Modal, message, Button } from "antd";
 import useSWR from "swr";
 import Axios from "axios";
 import { Status } from "./style";
@@ -81,7 +81,40 @@ const columns = [
       </Space>
     ),
   },
+  {
+    title: "Excluir",
+    key: "excluir",
+    render: (text, record) => (
+      <Space size="middle">
+        {!record.request_finished && (
+          <Button
+            type="danger"
+            className="ant-dropdown-link"
+            onClick={() => { destroyRequest(record.id) }}
+          >
+            Excluir
+          </Button>
+        )}
+      </Space>
+    ),
+  }
 ];
+
+const destroyRequest = async (id) => {
+
+  Axios.delete(`request/destroy/${id}`, {
+    headers: {
+      Authorization: localStorage.getItem("jwtToken")
+    },
+  }).then(res => {
+    message.success('Requisição apagada com sucesso!');
+    setTimeout(() => {
+      window.location.reload();
+    }, 500);
+  }).catch(err => {
+    message.error('Desculpe, ocorreu um erro :(');
+  })
+}
 
 const expandable = {
   expandedRowRender: (record) => {
