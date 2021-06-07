@@ -1,6 +1,6 @@
 import React, { useContext } from "react";
 import { Table, Space, Modal, message, Button } from "antd";
-import useSWR from "swr";
+import useSWR, { mutate } from "swr";
 import Axios from "axios";
 import { Status } from "./style";
 import { FilePdfOutlined } from "@ant-design/icons";
@@ -90,31 +90,36 @@ const columns = [
           <Button
             type="danger"
             className="ant-dropdown-link"
-            onClick={() => { destroyRequest(record.id) }}
+            onClick={() => {
+              destroyRequest(record.id);
+            }}
           >
             Excluir
           </Button>
         )}
       </Space>
     ),
-  }
+  },
 ];
 
 const destroyRequest = async (id) => {
-
   Axios.delete(`request/destroy/${id}`, {
     headers: {
-      Authorization: localStorage.getItem("jwtToken")
+      Authorization: localStorage.getItem("jwtToken"),
     },
-  }).then(res => {
-    message.success('Requisição apagada com sucesso!');
-    setTimeout(() => {
-      window.location.reload();
-    }, 500);
-  }).catch(err => {
-    message.error('Desculpe, ocorreu um erro :(');
   })
-}
+    .then((res) => {
+      message.success("Requisição apagada com sucesso!");
+      mutate("/requests/all");
+
+      // setTimeout(() => {
+      //   window.location.reload();
+      // }, 500);
+    })
+    .catch((err) => {
+      message.error("Desculpe, ocorreu um erro :(");
+    });
+};
 
 const expandable = {
   expandedRowRender: (record) => {
@@ -123,7 +128,10 @@ const expandable = {
     }
 
     return (
-      <a href={Axios.defaults.baseURL + "media/" + record.receipt_location}>
+      <a
+        target="_blank"
+        href={Axios.defaults.baseURL + "media/" + record.receipt_location}
+      >
         <FilePdfOutlined />
         {record.receipt_location}
       </a>
